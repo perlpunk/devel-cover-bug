@@ -1,9 +1,14 @@
-cover:
-	rm -r cover_db
+cover: clean
 	PERL5OPT=-MDevel::Cover prove t/cover.t
 	cover -report html_minimal cover_db
 
-uncoverable:
-	rm -r cover_db
-	PERL5OPT=-MDevel::Cover=-coverage,statement prove -l t/uncoverable.t
+test_uncoverable:
+	PERL5OPT=-MDevel::Cover=-coverage,statement perl t/uncoverable.t
+
+report:
 	cover -report html_minimal cover_db
+
+uncoverable: clean test_uncoverable report
+
+clean:
+	rm -r cover_db
